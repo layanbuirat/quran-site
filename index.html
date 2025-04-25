@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>موقع حافظات القرآن</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a1a1a, #333333);
+            color: #f0e68c;
+            overflow-x: hidden;
+            margin: 0;
+        }
+
+        .navbar {
+            background: #1a1a1a;
+            border-bottom: 2px solid #d4af37;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            padding: 10px 15px;
+        }
+
+        .navbar-brand, .nav-link {
+            color: #d4af37 !important;
+            transition: color 0.3s ease, transform 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .navbar-brand {
+            font-size: 1.2rem;
+        }
+
+        .nav-link:hover, .navbar-brand:hover {
+            color: #ffffff !important;
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            color: #ffffff !important;
+            border-bottom: 2px solid #d4af37;
+        }
+
+        .navbar-text {
+            color: #d4af37;
+            font-size: 0.9rem;
+        }
+
+        .navbar-nav {
+            gap: 10px;
+        }
+
+        .navbar-toggler {
+            border-color: #d4af37;
+        }
+
+        .page-content {
+            min-height: 70vh;
+            padding: 15px;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: #2b2b2b;
+            border: 1px solid #d4af37;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 15px;
+        }
+
+        .card:hover {
+            transform: translateY(-5px) rotateX(5deg);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .card-header {
+            background: #d4af37;
+            color: #1a1a1a;
+            font-weight: bold;
+            border-bottom: 1px solid #b8972f;
+            border-radius: 10px 10px 0 0;
+            padding: 10px 15px;
+            font-size: 1.1rem;
+        }
+
+        .card-body {
+            color: #f0e68c;
+            padding: 15px;
+        }
+
+        .stat-box {
+            background: #333333;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #d4af37;
+            transition: transform 0.3s ease;
+            margin-bottom: 10px;
+        }
+
+        .stat-box:hover {
+            transform: scale(1.05);
+        }
+
+        .stat-box h3 {
+            color: #d4af37;
+            font-weight: bold;
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .stat-box p {
+            font-size: 0.9rem;
+        }
+
+        .table {
+            background: #2b2b2b;
+            color: #f0e68c;
+            font-size: 0.9rem;
+        }
+
+        .table th {
+            background: #d4af37;
+            color: #1a1a1a;
+            font-size: 0.9rem;
+            padding: 8px;
+        }
+
+        .table td {
+            border-color: #d4af37;
+            padding: 8px;
+            font-size: 0.85rem;
+        }
+
+        /* RTL styles */
+        [dir="rtl"] {
+            text-align: right;
+        }
+
+        [dir="rtl"] .form-control, 
+        [dir="rtl"] .form-select {
+            text-align: right;
+            background: #333333;
+            color: #f0e68c;
+            border: 1px solid #d4af37;
+            font-size: 0.9rem;
+        }
+
+        .form-label {
+            font-size: 0.9rem;
+        }
+
+        .btn {
+            margin-left: 5px;
+            background: #d4af37;
+            color: #1a1a1a;
+            border: none;
+            transition: background 0.3s ease, transform 0.3s ease;
+            font-size: 0.9rem;
+            padding: 8px 15px;
+        }
+
+        .btn:hover {
+            background: #b8972f;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: #8b0000;
+            color: #ffffff;
+        }
+
+        .btn-danger:hover {
+            background: #a30000;
+        }
+
+        .alert {
+            background: #333333;
+            color: #d4af37;
+            border: 1px solid #d4af37;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            padding: 10px;
+        }
+
+        .modal-content {
+            background: #2b2b2b;
+            color: #f0e68c;
+            border: 1px solid #d4af37;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-header, .modal-footer {
+            border-color: #d4af37;
+        }
+
+        .modal-body {
+            padding: 15px;
+        }
+
+        footer {
+            background: #1a1a1a;
+            border-top: 2px solid #d4af37;
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.5);
+            padding: 15px 0;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Adjustments for All Phones */
+        @media (max-width: 992px) {
+            .navbar-nav {
+                text-align: center;
+                padding: 10px 0;
+            }
+
+            .nav-link {
+                font-size: 1rem;
+                padding: 8px 15px;
+            }
+
+            .navbar-text {
+                font-size: 0.85rem;
+                margin-top: 10px;
+            }
+
+            .stat-box {
+                margin-bottom: 15px;
+            }
+
+            .card-header h5 {
+                font-size: 1rem;
+            }
+
+            .card-body p {
+                font-size: 0.85rem;
+            }
+
+            .btn {
+                font-size: 0.85rem;
+                padding: 6px 12px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .page-content {
+                padding: 10px;
+            }
+
+            .card {
+                margin-bottom: 10px;
+            }
+
+            .card-header {
+                font-size: 1rem;
+                padding: 8px 12px;
+            }
+
+            .card-body {
+                padding: 10px;
+            }
+
+            .stat-box {
+                padding: 8px;
+            }
+
+            .stat-box h3 {
+                font-size: 1.2rem;
+            }
+
+            .stat-box p {
+                font-size: 0.8rem;
+            }
+
+            .table-responsive {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .table {
+                font-size: 0.8rem;
+            }
+
+            .table th, .table td {
+                padding: 6px;
+                font-size: 0.75rem;
+            }
+
+            .form-control, .form-select {
+                font-size: 0.85rem;
+                padding: 6px;
+            }
+
+            .form-label {
+                font-size: 0.85rem;
+            }
+
+            .btn {
+                font-size: 0.8rem;
+                padding: 6px 10px;
+            }
+
+            .modal-dialog {
+                margin: 10px;
+            }
+
+            .modal-body {
+                padding: 10px;
+            }
+
+            .modal-footer .btn {
+                font-size: 0.8rem;
+                padding: 6px 10px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .navbar-brand {
+                font-size: 1rem;
+            }
+
+            .nav-link {
+                font-size: 0.9rem;
+                padding: 6px 10px;
+            }
+
+            .navbar-text {
+                font-size: 0.8rem;
+            }
+
+            .card-header h5 {
+                font-size: 0.9rem;
+            }
+
+            .card-body p {
+                font-size: 0.8rem;
+            }
+
+            .stat-box h3 {
+                font-size: 1rem;
+            }
+
+            .stat-box p {
+                font-size: 0.75rem;
+            }
+
+            .table th, .table td {
+                font-size: 0.7rem;
+                padding: 5px;
+            }
+
+            .form-control, .form-select {
+                font-size: 0.8rem;
+                padding: 5px;
+            }
+
+            .form-label {
+                font-size: 0.8rem;
+            }
+
+            .btn {
+                font-size: 0.75rem;
+                padding: 5px 8px;
+            }
+
+            .alert {
+                font-size: 0.8rem;
+                padding: 8px;
+            }
+
+            footer p {
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 320px) {
+            .navbar-brand {
+                font-size: 0.9rem;
+            }
+
+            .nav-link {
+                font-size: 0.85rem;
+                padding: 5px 8px;
+            }
+
+            .navbar-text {
+                font-size: 0.75rem;
+            }
+
+            .card-header h5 {
+                font-size: 0.85rem;
+            }
+
+            .card-body p {
+                font-size: 0.75rem;
+            }
+
+            .stat-box h3 {
+                font-size: 0.9rem;
+            }
+
+            .stat-box p {
+                font-size: 0.7rem;
+            }
+
+            .table th, .table td {
+                font-size: 0.65rem;
+                padding: 4px;
+            }
+
+            .btn {
+                font-size: 0.7rem;
+                padding: 4px 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">القرآن شفيع لأهله</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#" data-page="dashboard">الرئيسية</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-page="students">إدارة الطالبات</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-page="attendance">الغياب</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-page="events">المناسبات</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-page="competitions">المسابقات</a>
+                    </li>
+                </ul>
+                <div class="ms-auto">
+                    <span class="navbar-text" id="current-date"></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main content -->
+    <div class="container mt-4">
+        <!-- Dashboard -->
+        <div id="dashboard" class="page-content">
+            <div class="row">
+                <div class="col-12 col-md-8">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5>(ولقد يسرنا القرآن للذكر)</h5>
+                        </div>
+                        <div class="card-body">
+                            <p>(واتقوا الله ويعلمكم الله والله بكل شيء عليم)</p>
+                            <div class="alert">
+                                <strong id="today-meeting"></strong>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5>إحصائيات سريعة</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row text-center">
+                                <div class="col-12 col-sm-4">
+                                    <div class="stat-box">
+                                        <h3 id="total-students">0</h3>
+                                        <p>عدد الطالبات</p>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-4">
+                                    <div class="stat-box">
+                                        <h3 id="total-pages">_______</h3>
+                                        <p id="warda-today">وردة اليوم كانت: </p>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-4">
+                                    <div class="stat-box">
+                                        <h3 id="absent-today">___________</h3>
+                                        <p>غائبات اليوم</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-12 col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5>أحدث الإعلانات</h5>
+                        </div>
+                        <div class="card-body" id="latest-announcements">
+                            <p class="text-center">لا توجد إعلانات حالياً</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>القادم من المناسبات</h5>
+                        </div>
+                        <div class="card-body" id="upcoming-events">
+                            <p class="text-center">لا توجد مناسبات قادمة</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Students management -->
+        <div id="students" class="page-content d-none">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>إدارة الطالبات</h5>
+                </div>
+                <div class="card-body">
+                    <button class="btn mb-3" data-bs-toggle="modal" data-bs-target="#addStudentModal">
+                        <i class="fas fa-plus"></i> إضافة طالبة جديدة
+                    </button>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>الاسم</th>
+                                    <th>عدد الصفحات</th>
+                                    <th>من سورة</th>
+                                    <th>المراجعة عدد الصفحات</th>
+                                    <th>التاريخ</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="students-table">
+                                <tr>
+                                    <td colspan="6" class="text-center">لا توجد طالبات مسجلة</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Attendance management -->
+        <div id="attendance" class="page-content d-none">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>إدارة الغياب</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-12 col-md-4 mb-2">
+                            <label for="attendance-date" class="form-label">تاريخ الغياب</label>
+                            <input type="date" class="form-control" id="attendance-date">
+                        </div>
+                        <div class="col-12 col-md-4 mb-2">
+                            <label for="select-student" class="form-label">اختر طالبة</label>
+                            <select class="form-select" id="select-student">
+                                <option value="">اختر طالبة</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-4 d-flex align-items-end">
+                            <button class="btn w-100" id="add-absent">إضافة غياب</button>
+                        </div>
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>الاسم</th>
+                                    <th>تاريخ الغياب</th>
+                                    <th>إجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="attendance-table">
+                                <tr>
+                                    <td colspan="3" class="text-center">لا توجد سجلات غياب</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Events management -->
+        <div id="events" class="page-content d-none">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>إدارة المناسبات</h5>
+                </div>
+                <div class="card-body">
+                    <button class="btn mb-3" data-bs-toggle="modal" data-bs-target="#addEventModal">
+                        <i class="fas fa-plus"></i> إضافة مناسبة جديدة
+                    </button>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>اسم المناسبة</th>
+                                    <th>التاريخ</th>
+                                    <th>الوصف</th>
+                                    <th>إجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="events-table">
+                                <tr>
+                                    <td colspan="4" class="text-center">لا توجد مناسبات مسجلة</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Competitions management -->
+        <div id="competitions" class="page-content d-none">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>إدارة المسابقات</h5>
+                </div>
+                <div class="card-body">
+                    <button class="btn mb-3" data-bs-toggle="modal" data-bs-target="#addCompetitionModal">
+                        <i class="fas fa-plus"></i> إضافة مسابقة جديدة
+                    </button>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>اسم المسابقة</th>
+                                    <th>التاريخ</th>
+                                    <th>النوع</th>
+                                    <th>الجائزة</th>
+                                    <th>إجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="competitions-table">
+                                <tr>
+                                    <td colspan="5" class="text-center">لا توجد مسابقات مسجلة</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <!-- Add Student Modal -->
+    <div class="modal fade" id="addStudentModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">إضافة طالبة جديدة</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="add-student-form">
+                        <div class="mb-3">
+                            <label for="student-name" class="form-label">اسم الطالبة</label>
+                            <input type="text" class="form-control" id="student-name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="pages-count" class="form-label">عدد الصفحات</label>
+                            <input type="number" class="form-control" id="pages-count" min="1" required>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-12 col-md-6 mb-2 mb-md-0">
+                                <label for="from-surah" class="form-label">من سورة</label>
+                                <input type="text" class="form-control" id="from-surah" required>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <label for="to-surah" class="form-label">إلى سورة</label>
+                                <input type="text" class="form-control" id="to-surah" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="student-date" class="form-label">التاريخ</label>
+                            <input type="date" class="form-control" id="student-date" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-primary" id="save-student">حفظ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Event Modal -->
+    <div class="modal fade" id="addEventModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">إضافة مناسبة جديدة</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="add-event-form">
+                        <div class="mb-3">
+                            <label for="event-name" class="form-label">اسم المناسبة</label>
+                            <input type="text" class="form-control" id="event-name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="event-date" class="form-label">تاريخ المناسبة</label>
+                            <input type="date" class="form-control" id="event-date" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="event-description" class="form-label">وصف المناسبة</label>
+                            <textarea class="form-control" id="event-description" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-primary" id="save-event">حفظ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Competition Modal -->
+    <div class="modal fade" id="addCompetitionModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">إضافة مسابقة جديدة</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="add-competition-form">
+                        <div class="mb-3">
+                            <label for="competition-name" class="form-label">اسم المسابقة</label>
+                            <input type="text" class="form-control" id="competition-name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="competition-date" class="form-label">تاريخ المسابقة</label>
+                            <input type="date" class="form-control" id="competition-date" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="competition-type" class="form-label">نوع المسابقة</label>
+                            <select class="form-select" id="competition-type" required>
+                                <option value="">اختر النوع</option>
+                                <option value="حفظ">حفظ</option>
+                                <option value="تلاوة">تلاوة</option>
+                                <option value="تفسير">تفسير</option>
+                                <option value="أخرى">أخرى</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="competition-prize" class="form-label">الجائزة</label>
+                            <input type="text" class="form-control" id="competition-prize">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-primary" id="save-competition">حفظ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirm Delete Modal -->
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">تأكيد الحذف</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>هل أنت متأكد أنك تريد حذف هذا العنصر؟</p>
+                    <input type="hidden" id="delete-item-id">
+                    <input type="hidden" id="delete-item-type">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-danger" id="confirm-delete">حذف</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-white text-center py-3 mt-4">
+        <div class="container">
+            <p>موقع حافظات القرآن © <span id="current-year"></span></p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="script.js"></script>
+</body>
+</html>
