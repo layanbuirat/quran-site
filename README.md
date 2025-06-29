@@ -21,8 +21,6 @@
 
 ## 🎥 System Demo
 <div align="center">
-  <img src="view.gif" width="800" alt="Quran System Walkthrough">
-  <br>
   [View Full Screen Demo](view.gif)
 </div>
 
